@@ -50,8 +50,7 @@ export const handler = async (event) => {
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const currentTime = `${hours}${minutes}`;
-    // const docRef = doc(db, "waitTimes", todaysDate);
-    const docRef = db.collection("scrapedData").doc(todaysDate);
+    const docRef = db.collection("waitTimes").doc(todaysDate);
   
     // Example: Save scraped data
     await docRef.set({
