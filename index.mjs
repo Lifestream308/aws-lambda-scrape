@@ -7,8 +7,6 @@ let firebaseApp;
 export const handler = async (event) => {
   let browser;
 
-
-
   if (!firebaseApp) {
     const serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
 
@@ -20,16 +18,6 @@ export const handler = async (event) => {
   }
 
   const db = admin.firestore();
-
-  // Example: Save scraped data
-  await db.collection("scrapedData").add({
-    title: "Example Page",
-    timestamp: admin.firestore.FieldValue.serverTimestamp(),
-  });
-
-
-
-
 
   try {
     // Launch Puppeteer with AWS Lambda-compatible Chromium
@@ -53,6 +41,24 @@ export const handler = async (event) => {
 
     const scrapedTable = Object.fromEntries(tableData1.map((tableData, index) => [tableData, tableData2[index]]));
     console.log(scrapedTable)
+
+
+
+    const date = new Date();
+    // const todaysDate = String(date.toISOString().split("T")[0])
+    const todaysDate = String(date.toLocaleDateString("en-CA", { timeZone: "America/Los_Angeles" }));
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const currentTime = `${hours}${minutes}`;
+    // const docRef = doc(db, "waitTimes", todaysDate);
+    const docRef = db.collection("scrapedData").doc(todaysDate);
+  
+    // Example: Save scraped data
+    await docRef.set({
+      [currentTime]: scrapedTable,
+    }, { merge: true });
+
+
 
     return {
       statusCode: 200,
