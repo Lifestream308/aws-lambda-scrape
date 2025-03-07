@@ -5,7 +5,7 @@ yarn-error.log
 
 # Environment variables
 .env
-.zip
+*.zip
 
 # Logs
 logs/
