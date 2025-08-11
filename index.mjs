@@ -37,7 +37,7 @@ export const handler = async (event) => {
     const data = await page.evaluate(() => document.querySelector('h1')?.innerText);
 
     const tableData1 = await page.$$eval('table tbody tr td:nth-child(1)', tdArray => tdArray.map(td => td.innerText))
-    const tableData2 = await page.$$eval('table tbody tr td:nth-child(2)', tdArray => tdArray.map(td => td.innerText))
+    const tableData2 = await page.$$eval('table tbody tr td:nth-child(4)', tdArray => tdArray.map(td => td.innerText))
 
     const scrapedTable = Object.fromEntries(tableData1.map((tableData, index) => [tableData, tableData2[index]]));
     console.log(scrapedTable)
@@ -63,7 +63,7 @@ export const handler = async (event) => {
       statusCode: 200,
       // body: JSON.stringify({ title }),
       body: JSON.stringify({ data }),
-      test: 5,
+      test: 6,
     };
   } catch (error) {
     console.error("Error running Puppeteer:", error);
